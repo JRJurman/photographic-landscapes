@@ -1,6 +1,15 @@
-<html>
+<html lang='en'>
+	<head>
+		<!-- meta-data -->
+		<title>Photographic Landscapes</title>
+	</head>
+	<style>
+		section { display: grid; grid-template-columns: 1fr 1fr; } img { width: 100%; }
+	</style>
 	<body>
-		Hello
-		{{name}}
+		<section>
+			<img src='{{graphic.file.url}}' alt='{{graphic.description}}' />
+			{{{blurb}}}
+		</section>
 	</body>
 </html>

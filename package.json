@@ -3,6 +3,8 @@
 		"start": "node server.js"
 	},
 	"dependencies": {
+		"@contentful/rich-text-html-renderer": "^16.6.10",
+		"contentful": "^10.15.1",
 		"express": "^4.21.0",
 		"express-handlebars": "^8.0.1"
 	}
