@@ -11,8 +11,9 @@
 
 		{{> nav}}
 		<section>
-			<img src='{{graphic.file.url}}' alt='{{graphic.description}}' />
-			{{{blurb}}}
+			{{#each thumbnails}}
+				<img src='{{this.fields.file.url}}' alt='{{this.fields.description}}' />
+			{{/each}}
 		</section>
 	</body>
 </html>

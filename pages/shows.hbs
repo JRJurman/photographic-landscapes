@@ -11,8 +11,14 @@
 
 		{{> nav}}
 		<section>
-			<img src='{{graphic.file.url}}' alt='{{graphic.description}}' />
-			{{{blurb}}}
+			{{#each events}}
+				<div>
+					<h2>{{this.title}}</h2>
+					<i>{{this.startDate}} - {{this.endDate}}</i>
+					{{{this.description}}}
+					<img src='{{this.photo.file}}' alt='{{this.photo.description}}' />
+				</div>
+			{{/each}}
 		</section>
 	</body>
 </html>
