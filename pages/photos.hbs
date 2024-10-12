@@ -4,7 +4,41 @@
 		<title>Photographic Landscapes - Photos</title>
 	</head>
 	<style>
-		section { display: grid; grid-template-columns: 1fr 1fr; } img { width: 100%; }
+		section {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+			gap: 1em;
+		}
+
+		pl-thumbnail:focus-visible p,
+		pl-thumbnail:hover p {
+			display: block;
+		}
+
+		pl-thumbnail {
+			position: relative;
+
+			img { width: 100%; }
+
+			p {
+				display: none;
+				position: absolute;
+				margin: 0;
+				color: white;
+				background: rgba(0, 0, 0, 0.75);
+			}
+
+			p[desc] {
+				bottom: 0;
+			}
+
+			p[num] {
+				top: 0;
+				right: 0;
+				padding: 0 0 0.2em 0.2em;
+        border-radius: 0 0 0 0.6em;
+			}
+		}
 	</style>
 	<body>
 		<h1>Photos</h1>
@@ -12,7 +46,11 @@
 		{{> nav}}
 		<section>
 			{{#each thumbnails}}
-				<img src='{{this.fields.file.url}}' alt='{{this.fields.description}}' />
+				<pl-thumbnail tabindex="0">
+					<img src='{{this.fields.file.url}}' alt='{{this.fields.description}}' />
+					<p desc>{{this.fields.description}}</p>
+					<p num>{{this.fields.title}}</p>
+				</pl-thumbnail>
 			{{/each}}
 		</section>
 	</body>
