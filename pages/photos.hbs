@@ -1,16 +1,17 @@
 <html lang='en'>
 	<head>
+		{{> styles}}
 		{{> meta}}
 		<title>Photographic Landscapes - Photos</title>
 	</head>
 	<style>
 		section {
 			display: grid;
-			grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 			gap: 1em;
 		}
 
-		pl-thumbnail:focus-visible p,
+		pl-thumbnail:focus p,
 		pl-thumbnail:hover p {
 			display: block;
 		}
@@ -37,6 +38,7 @@
 				top: 0;
 				right: 0;
         border-radius: 0 0 0 0.6em;
+				padding-left: 0.4em;
 			}
 		}
 	</style>
@@ -46,7 +48,7 @@
 		{{> nav}}
 		<section>
 			{{#each thumbnails}}
-				<pl-thumbnail tabindex="0">
+				<pl-thumbnail tabindex="0" onclick="focus">
 					<img src='{{this.fields.file.url}}' alt='{{this.fields.description}}' />
 					<p desc>{{this.fields.description}}</p>
 					<p num>{{this.fields.title}}</p>

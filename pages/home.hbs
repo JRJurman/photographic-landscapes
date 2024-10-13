@@ -1,10 +1,17 @@
 <html lang='en'>
 	<head>
+		{{> styles}}
 		{{> meta}}
 		<title>Photographic Landscapes</title>
 	</head>
 	<style>
-		section { display: grid; grid-template-columns: 1fr 1fr; } img { width: 100%; }
+		section {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 1em;
+		}
+
+		img { width: 100%; }
 	</style>
 	<body>
 		<h1>Home</h1>
