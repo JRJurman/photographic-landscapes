@@ -23,6 +23,37 @@ const showsPageEntry = '12iAUWL842bJzzgtauHhd3';
 const photosPageEntry = '6GPzfSeoHP2oXNz7NAC6dF';
 const contactPageEntry = '5243Thx57mMBoG4ZlS98pA';
 
+const buildCalendarConfigs = (event) => {
+	// build a calendar config for each month
+	// we do this because each calendar display only supports a single month
+	const startDate = new Date(event.fields.startDate);
+	const endDate = new Date(event.fields.endDate);
+	const months = endDate.getMonth() - startDate.getMonth() + 1;
+	const calendars = Array(months)
+		.fill(0)
+		.map((e, monthOffset) => {
+			const newDate = new Date(startDate);
+			newDate.setMonth(startDate.getMonth() + monthOffset);
+
+			const lastDateOfMonth = new Date(startDate);
+			lastDateOfMonth.setMonth(startDate.getMonth() + monthOffset + 1);
+			lastDateOfMonth.setUTCDate(0);
+
+			const start = monthOffset === 0 ? startDate.getUTCDate() : 1;
+			const end = monthOffset === months - 1 ? endDate.getUTCDate() : lastDateOfMonth.getUTCDate();
+
+			const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(newDate);
+			return {
+				month: monthName,
+				year: newDate.getFullYear(),
+				start: start,
+				end: end,
+			};
+		});
+
+	return calendars;
+};
+
 const processEventData = (event) => {
 	return {
 		title: event.fields.title,
@@ -30,6 +61,7 @@ const processEventData = (event) => {
 			file: event.fields.photo.fields.file.url,
 			description: event.fields.photo.fields.description,
 		},
+		calendars: buildCalendarConfigs(event),
 		startDate: event.fields.startDate,
 		endDate: event.fields.endDate,
 		description: documentToHtmlString(event.fields.description),

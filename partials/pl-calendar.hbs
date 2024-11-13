@@ -1,0 +1,110 @@
+<!-- include the Tram-Deco library -->
+<script src="https://unpkg.com/tram-deco@6"></script>
+
+<!-- Load ordinals so that we can add accessible alt text-->
+<script>
+  const enOrdinalRules = new Intl.PluralRules("en-US", { type: "ordinal" });
+
+  const suffixes = new Map([
+    ["one", "st"],
+    ["two", "nd"],
+    ["few", "rd"],
+    ["other", "th"],
+  ]);
+
+  const formatOrdinals = (n) => {
+    const rule = enOrdinalRules.select(n);
+    const suffix = suffixes.get(rule);
+    return `${n}${suffix}`;
+  };
+</script>
+
+<!-- define some web components -->
+<template id="definitions">
+  <pl-calendar>
+    <script td-property="observedAttributes">
+      ['month', 'year', 'start', 'end']
+    </script>
+
+    <script td-method="attributeChangedCallback">
+      const month = this.getAttribute('month');
+      const year = this.getAttribute('year');
+
+      const calendarTitle = this.shadowRoot.querySelector('calendar-title');
+      calendarTitle.textContent = `${month} ${year}`;
+
+      // empty existing date nodes before adding new dates
+      const calendarGrid = this.shadowRoot.querySelector('calendar-grid');
+      calendarGrid.replaceChildren();
+
+      // determine how many empty slots we need to make based on the
+      // start day of the month
+      const firstDateOfMonth = new Date(`${month} 1, ${year}`);
+
+      Array(firstDateOfMonth.getDay()).fill(0).forEach(() => {
+        calendarGrid.append(document.createElement('div'))
+      })
+
+      // determine how many days total we need to fit in the widget
+      // do this by setting the date to the 0th date of the next month
+      const lastDateOfMonth = new Date(firstDateOfMonth);
+      lastDateOfMonth.setMonth(lastDateOfMonth.getMonth() + 1)
+      lastDateOfMonth.setDate(0);
+
+      const startRange = parseInt(this.getAttribute('start'));
+      const endRange = parseInt(this.getAttribute('end'));
+
+      Array(lastDateOfMonth.getDate()).fill(0).forEach((e, date) => {
+        const div = document.createElement('div');
+        div.textContent = date+1;
+
+        // if this is between our range, highlight it
+        if ((date+1) >= startRange && (date+1) <= endRange) {
+          div.setAttribute('in-range', '');
+        }
+
+        calendarGrid.append(div)
+      })
+
+      this.ariaLabel = `Calendar of ${month} ${year}, highlighting the dates between the ${formatOrdinals(startRange)} and the ${formatOrdinals(endRange)}`;
+      this.role = 'image'
+    </script>
+    <template shadowrootmode="open">
+      <style>
+        calendar-title {
+          display: block;
+          text-align: center;
+          font-weight: bold;
+          margin-bottom: 1em;
+        }
+        calendar-header, calendar-grid {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          text-align: center;
+        }
+        calendar-grid div {
+          line-height: 3em;
+        }
+        calendar-grid div[in-range] {
+          background: cyan;
+        }
+      </style>
+
+      <calendar-container aria-hidden="true" role="presentation">
+        <calendar-title></calendar-title>
+        <calendar-header>
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </calendar-header>
+        <calendar-grid></calendar-grid>
+      </calendar-container>
+    </template>
+  </pl-calendar>
+</template>
+
+<script>TramDeco.processTemplate(definitions)</script>
