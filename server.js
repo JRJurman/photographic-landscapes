@@ -5,7 +5,7 @@ const { documentToHtmlString } = require('@contentful/rich-text-html-renderer');
 const client = require('./contentful');
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
 // Create `ExpressHandlebars` instance with a default layout and shared partials
 const hbs = create({
