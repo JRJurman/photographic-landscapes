@@ -94,7 +94,23 @@ app.get('/shows', async (req, res) => {
 
 	// TODO filter and sort
 	const eventsData = events.map(processEventData);
-	res.render('shows', { events: eventsData });
+	const eventsByRelativeDate = Object.groupBy(eventsData, (eventData) => {
+		const today = new Date();
+		const startDate = new Date(eventData.startDate);
+		const endDate = new Date(eventData.endDate);
+		if (startDate < today && endDate > today) {
+			return 'ongoing';
+		}
+		if (startDate > today) {
+			return 'upcoming';
+		}
+		if (endDate < today) {
+			return 'past';
+		}
+		return 'unknown';
+	});
+
+	res.render('shows', { events: eventsByRelativeDate });
 });
 
 app.get('/photos', async (req, res) => {

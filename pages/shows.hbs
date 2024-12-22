@@ -6,6 +6,10 @@
 		<title>Photographic Landscapes - Shows</title>
 	</head>
 	<style>
+		h2 {
+			margin-bottom: 0;
+		}
+
 		section {
 			display: flex;
 			flex-direction: column;
@@ -38,21 +42,30 @@
 		{{> header}}
 		{{> nav}}
 		<section>
-			{{#each events}}
-				<event-block>
-					<img src='{{this.photo.file}}' alt='{{this.photo.description}}' />
-					<div>
-						<h2>{{this.title}}</h2>
-						<i>{{this.startDate}} - {{this.endDate}}</i>
-						{{{this.description}}}
-					</div>
-					<calendar-block>
-						{{#each this.calendars}}
-							<pl-calendar month="{{this.month}}" year="{{this.year}}" start="{{this.start}}" end="{{this.end}}"></pl-calendar>
-						{{/each}}
-					</calendar-block>
-				</event-block>
-			{{/each}}
+			{{#if events.ongoing.length}}
+			<div>
+				<h2>Ongoing Shows</h2>
+				{{#each events.ongoing}}
+						{{> event-section this=this}}
+				{{/each}}
+			</div>
+			{{/if}}
+			{{#if events.upcoming.length}}
+			<div>
+				<h2>Upcoming Shows</h2>
+				{{#each events.upcoming}}
+						{{> event-section this=this}}
+				{{/each}}
+			</div>
+			{{/if}}
+			{{#if events.past.length}}
+			<div>
+				<h2>Past Shows</h2>
+				{{#each events.past}}
+						{{> event-section this=this}}
+				{{/each}}
+			</div>
+			{{/if}}
 		</section>
 	</body>
 </html>

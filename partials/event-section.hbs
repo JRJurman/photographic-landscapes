@@ -1,0 +1,13 @@
+<event-block>
+	<img src='{{this.photo.file}}' alt='{{this.photo.description}}' />
+	<div>
+		<h2>{{this.title}}</h2>
+		<i>{{this.startDate}} - {{this.endDate}}</i>
+		{{{this.description}}}
+	</div>
+	<calendar-block>
+		{{#each this.calendars}}
+			<pl-calendar month="{{this.month}}" year="{{this.year}}" start="{{this.start}}" end="{{this.end}}"></pl-calendar>
+		{{/each}}
+	</calendar-block>
+</event-block>
