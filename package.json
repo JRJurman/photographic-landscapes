@@ -2,6 +2,9 @@
 	"script": {
 		"start": "node server.js"
 	},
+	"engines": {
+		"node": "21.x"
+	},
 	"dependencies": {
 		"@contentful/rich-text-html-renderer": "^16.6.10",
 		"contentful": "^10.15.1",
